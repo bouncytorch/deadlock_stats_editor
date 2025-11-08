@@ -1,0 +1,5 @@
+node_modules/
+output/
+!.gitignore
+!dist/
+!Reduced_CSDK_12

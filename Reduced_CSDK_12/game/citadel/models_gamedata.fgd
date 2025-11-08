@@ -1,0 +1,68 @@
+//===================== Copyright (c) Valve Corporation. All Rights Reserved. ======================
+//
+//==================================================================================================
+
+@include "models_base.fgd"
+@include "models_base_breakables.fgd"
+
+@ModelAnimEvent = AE_TAGGED_SOUND
+[
+	name(string) : "Event Name. Defined in _anim_sounds.vdata"
+	attachment(model_attachment) : "Attachment" : ""
+]
+
+
+@ModelGameData = camera_settings : "Citadel camera settings (Legacy)"
+[
+    camera_side_offset(float) : "Side offset" : ""
+    camera_back_offset(float) : "Back offset" : ""
+    camera_back_offset_aiming(float) : "Back offset for aiming" : ""
+    camera_height_standing(float) : "Height standing" : ""
+    camera_height_crouching(float) : "Height crouching" : ""
+]
+
+@ModelGameData
+
+muzzle
+{
+    list =
+    {
+        attach_key = "attachment_name"
+        graph_key = "animgraph_trigger_parameter_name"
+        check_key = "is_Primary"
+    }
+}
+
+game_data_list( muzzle_desc_list)
+= muzzle_desc_list
+[
+    attachment_name(model_attachment) : ""    
+    animgraph_trigger_parameter_name(choices):"": "b_Shoot" =
+    [
+        "none"                :"none"
+        "b_Shoot"            :"b_Shoot"
+        "b_ShootLeft"        :"b_ShootLeft"
+        "b_ShootRight"        :"b_ShootRight"
+
+    ]
+    is_Primary(bool): ""
+]
+
+@ModelGameData = damage_number_settings : "Citadel damage settings"
+[
+    side_offset_near(float) : "Side offset near" : ""
+    side_offset_far(float) : "Side offset far" : ""
+    height_offset_near(float) : "Height offset near" : ""
+    height_offset_far(float) : "Height offset far" : ""
+]
+
+@ModelGameData = unit_status_settings_list : "unit status settings"
+[
+name(string) : "name" : ""
+unit_status_offset(vector) : "unit status offset" : ""
+]
+
+@ModelGameData = CCitadelHeroModelGameData_t : "CCitadelHeroModelGameData_t"
+[
+ m_sAG2HeroPawnAnimGraph(resource:vnmgraph) : "AG2 Hero graph" : ""
+]
