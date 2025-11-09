@@ -3,16 +3,16 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 
 module.exports = {
   packagerConfig: {
-    name: "randomizer-mod-generator",
     asar: true,
     extraResource: [
-      'Reduced_CSDK_12/'
+      'Reduced_CSDK_12'
     ]
   },
   rebuildConfig: {},
   makers: [
     {
-      name: "@electron-forge/maker-zip"
+      name: '@electron-forge/maker-zip',
+      platforms: ['win32'],
     }
   ],
   plugins: [
