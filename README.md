@@ -59,9 +59,13 @@ The goal is to build an accessible editor, for people to be able to create their
 
 </details>
 
+## Why not cross-platform?
+As far as I can tell, workshop tools for Linux do not exist for any Valve title made with Source 2, at least not Counter-Strike 2, which these tools are derived from. Besides, currently Deadlock doesn't even have a native Linux build. 
+
+
+It is possible, however to successfully run this tool under Wine. Versions I've tested were: wine-staging 9.21 & 9.22, valve-wine 10.19 - resourcecompiler seemed to have no issues. Unfortunately the automatic installation is not possible unless the program is ran in the exact prefix Deadlock's bound to, so you'll have to install and enable the mod manually. Refer to this guide for more info on how to install Deadlock mods manually: [https://deadlockmodding.pages.dev/installing-mods](https://deadlockmodding.pages.dev/installing-mods)
 
 ## How to use?
-
 - Download the [latest release](https://github.com/bouncytorch/deadlock_stats_editor/releases/latest).
 - Run `randomizer_mod_generator.exe`.
 - Once the generation is finished the program will automatically detect your Deadlock installation, if there is one.
