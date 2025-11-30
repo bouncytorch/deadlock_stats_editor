@@ -153,7 +153,196 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
         return result;
     }
 
-    let abilityOrderShuffled: string[][] = abilityOrder.map(array => shuffleArray(array));
+    const blacklistedCombos = new Set<string>([
+        "hero_astro|ability_drifter_hunger",
+        "hero_astro|ability_magician_cloneturret",
+        "hero_astro|abilityw_power_jump",
+        "hero_atlas|ability_crackshot",
+        "hero_atlas|ability_magician_cloneturret",
+        "hero_atlas|ability_vampirebat_lovebites",
+        "hero_bebop|ability_afterburn",
+        "hero_bebop|ability_crackshot",
+        "hero_bebop|ability_drifter_hunger",
+        "hero_bebop|ability_magician_cloneturret",
+        "hero_bebop|ability_mirage_djinn_mark",
+        "hero_bebop|ability_power_jump",
+        "hero_bebop|ability_power_surge",
+        "hero_bebop|ability_vampirebat_lovebites",
+        "hero_bebop|citadel_ability_hornet_leap",
+        "hero_bookworm|ability_power_jump",
+        "hero_chrono|ability_bullet_flurry",
+        "hero_chrono|ability_crackshot",
+        "hero_chrono|ability_drifter_hunger",
+        "hero_chrono|ability_magician_cloneturret",
+        "hero_chrono|ability_mirage_djinn_mark",
+        "hero_chrono|ability_power_jump",
+        "hero_chrono|ability_vampirebat_lovebites",
+        "hero_doorman|ability_drifter_hunger",
+        "hero_doorman|ability_magician_cloneturret",
+        "hero_doorman|ability_power_jump",
+        "hero_drifter|ability_crackshot",
+        "hero_drifter|ability_magician_cloneturret",
+        "hero_drifter|ability_vampirebat_lovebites",
+        "hero_dynamo|ability_magician_cloneturret",
+        "hero_dynamo|ability_power_jump",
+        "hero_forge|ability_bullet_flurry",
+        "hero_forge|ability_crackshot",
+        "hero_forge|ability_drifter_hunger",
+        "hero_forge|ability_magician_cloneturret",
+        "hero_forge|ability_mirage_djinn_mark",
+        "hero_forge|ability_power_jump",
+        "hero_forge|ability_power_surge",
+        "hero_forge|ability_vampirebat_lovebites",
+        "hero_forge|citadel_ability_hornet_leap",
+        "hero_frank|ability_crackshot",
+        "hero_frank|ability_magician_cloneturret",
+        "hero_frank|ability_mirage_djinn_mark",
+        "hero_frank|ability_power_jump",
+        "hero_frank|ability_vampirebat_lovebites",
+        "hero_ghost|ability_magician_cloneturret",
+        "hero_ghost|ability_power_jump",
+        "hero_gigawatt|ability_bullet_flurry",
+        "hero_gigawatt|ability_crackshot",
+        "hero_gigawatt|ability_magician_cloneturret",
+        "hero_gigawatt|ability_mirage_djinn_mark",
+        "hero_gigawatt|ability_power_jump",
+        "hero_gigawatt|ability_vampirebat_lovebites",
+        "hero_haze|ability_crackshot",
+        "hero_haze|ability_drifter_hunger",
+        "hero_haze|ability_magician_cloneturret",
+        "hero_haze|ability_mirage_djinn_mark",
+        "hero_haze|ability_power_jump",
+        "hero_haze|ability_power_surge",
+        "hero_haze|ability_vampirebat_lovebites",
+        "hero_haze|citadel_ability_hornet_leap",
+        "hero_hornet|ability_crackshot",
+        "hero_hornet|ability_magician_cloneturret",
+        "hero_hornet|ability_mirage_djinn_mark",
+        "hero_hornet|ability_power_jump",
+        "hero_hornet|ability_vampirebat_lovebites",
+        "hero_inferno|ability_crackshot",
+        "hero_inferno|ability_drifter_hunger",
+        "hero_inferno|ability_magician_cloneturret",
+        "hero_inferno|ability_mirage_djinn_mark",
+        "hero_inferno|ability_power_jump",
+        "hero_inferno|ability_power_surge",
+        "hero_inferno|ability_vampirebat_lovebites",
+        "hero_inferno|citadel_ability_hornet_leap",
+        "hero_kelvin|ability_magician_cloneturret",
+        "hero_kelvin|ability_power_jump",
+        "hero_krill|ability_bullet_flurry",
+        "hero_krill|ability_crackshot",
+        "hero_krill|ability_magician_cloneturret",
+        "hero_krill|ability_mirage_djinn_mark",
+        "hero_krill|ability_power_jump",
+        "hero_krill|ability_vampirebat_lovebites",
+        "hero_lash|ability_bullet_flurry",
+        "hero_lash|ability_crackshot",
+        "hero_lash|ability_magician_cloneturret",
+        "hero_lash|ability_power_jump",
+        "hero_lash|ability_vampirebat_lovebites",
+        "hero_magician|ability_power_jump",
+        "hero_mirage|ability_crackshot",
+        "hero_mirage|ability_drifter_hunger",
+        "hero_mirage|ability_magician_cloneturret",
+        "hero_mirage|ability_power_jump",
+        "hero_nano|ability_bullet_flurry",
+        "hero_nano|ability_crackshot",
+        "hero_nano|ability_magician_cloneturret",
+        "hero_nano|ability_power_jump",
+        "hero_nano|ability_vampirebat_lovebites",
+        "hero_nano|citadel_ability_hornet_leap",
+        "hero_orion|ability_magician_cloneturret",
+        "hero_punkgoat|ability_crackshot",
+        "hero_punkgoat|ability_drifter_hunger",
+        "hero_punkgoat|ability_magician_cloneturret",
+        "hero_punkgoat|ability_mirage_djinn_mark",
+        "hero_punkgoat|ability_power_jump",
+        "hero_punkgoat|ability_power_surge",
+        "hero_punkgoat|ability_vampirebat_lovebites",
+        "hero_punkgoat|citadel_ability_hornet_leap",
+        "hero_shiv|ability_crackshot",
+        "hero_shiv|ability_power_jump",
+        "hero_shiv|ability_vampirebat_lovebites",
+        "hero_synth|ability_crackshot",
+        "hero_synth|ability_magician_cloneturret",
+        "hero_synth|ability_power_jump",
+        "hero_synth|ability_vampirebat_lovebites",
+        "hero_tengu|ability_crackshot",
+        "hero_tengu|ability_drifter_hunger",
+        "hero_tengu|ability_magician_cloneturret",
+        "hero_tengu|ability_mirage_djinn_mark",
+        "hero_tengu|ability_power_jump",
+        "hero_tengu|ability_power_surge",
+        "hero_tengu|ability_vampirebat_lovebites",
+        "hero_tengu|citadel_ability_hornet_leap",
+        "hero_vampirebat|ability_crackshot",
+        "hero_vampirebat|ability_magician_cloneturret",
+        "hero_vampirebat|ability_power_jump",
+        "hero_viper|ability_bullet_flurry",
+        "hero_viper|ability_crackshot",
+        "hero_viper|ability_drifter_hunger",
+        "hero_viper|ability_magician_cloneturret",
+        "hero_viper|ability_mirage_djinn_mark",
+        "hero_viper|ability_power_surge",
+        "hero_viper|ability_vampirebat_lovebites",
+        "hero_viper|citadel_ability_hornet_leap",
+        "hero_viscous|ability_magician_cloneturret",
+        "hero_warden|ability_crackshot",
+        "hero_warden|ability_stacking_damage",
+        "hero_warden|ability_magician_cloneturret",
+        "hero_warden|ability_power_jump",
+        "hero_wraith|ability_crackshot",
+        "hero_wraith|ability_drifter_hunger",
+        "hero_wraith|ability_magician_cloneturret",
+        "hero_wraith|ability_mirage_djinn_mark",
+        "hero_wraith|ability_power_jump",
+        "hero_wraith|ability_power_surge",
+        "hero_wraith|ability_vampirebat_lovebites",
+        "hero_wraith|citadel_ability_hornet_leap",
+    ]);
+
+    const isBlacklistedCombo = (heroName: string, ability: string): boolean => 
+        blacklistedCombos.has(`${heroName}|${ability}`);
+
+    // Shuffle with blacklist validation
+    let abilityOrderShuffled: string[][] = abilityOrder.map((array, slotIndex) => {
+        let shuffled = shuffleArray(array);
+        let attempts = 0;
+        const maxAttempts = 5000;
+
+        while (attempts < maxAttempts) {
+            let hasBlacklistedCombo = false;
+            for (let heroIdx = 0; heroIdx < heroesNames.length; heroIdx++) {
+                if (isBlacklistedCombo(heroesNames[heroIdx], shuffled[heroIdx])) {
+                    hasBlacklistedCombo = true;
+                    break;
+                }
+            }
+            if (!hasBlacklistedCombo) break;
+            shuffled = shuffleArray(array);
+            attempts++;
+        }
+
+        if (attempts >= maxAttempts)
+            console.warn(`⚠️  Slot ${slotIndex + 1}: Could not avoid all blacklisted combos after ${maxAttempts} attempts`);
+        console.log('wow')
+        return shuffled;
+    });
+
+    // Existing power_jump override
+    abilityOrderShuffled[1] = abilityOrderShuffled[1].map((v) => v == 'ability_power_jump' ? 'citadel_ability_lash' : v)
+
+    // Validation: Ensure no blacklisted combos slipped through
+    heroesNames.forEach((heroName, heroIdx) => {
+        abilityOrderShuffled.forEach((array, slotIdx) => {
+            if (isBlacklistedCombo(heroName, array[heroIdx])) {
+                console.error(`❌ BLACKLIST VIOLATION: ${heroName} has ${array[heroIdx]} in slot ${slotIdx + 1}`);
+            }
+        });
+    });
+
+    abilityOrderShuffled[1] = abilityOrderShuffled[1].map((v) => v == 'ability_power_jump' ? 'citadel_ability_lash' : v)
 
     // This changes the vdata
     heroesNames.forEach((key, index) =>
@@ -183,6 +372,7 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
     if (resourceCompiler.status)
         throw new Error(`resourcecompiler error. \n\nstdout: ${resourceCompiler.stdout}`);
 
+    fs.writeFileSync(path.join(GAME_PATH, 'identifier.txt'), 'bouncytorch/deadlock_stats_editor');
     Vpk
         .fromDirectory(GAME_PATH)
         .saveToFile(path.join(OUT_PATH, `${ADDON_NAME}.vpk`));
@@ -250,17 +440,40 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
             if (!fs.existsSync(addonsPath)) fs.mkdirSync(addonsPath, { recursive: true });
             else {
                 const files = fs.readdirSync(addonsPath).filter(v => v.startsWith('pak') && v.endsWith('_dir.vpk'));
+
+                let prevInstall = null;
+                for (const file of files) {
+                    const vpk = Vpk.fromFile(path.join(addonsPath, file));
+                    vpk.extractToDirectory(path.join(OUT_PATH, 'temp'), true);
+                    if (
+                        fs.existsSync(path.join(OUT_PATH, 'temp/identifier.txt'))
+                        && fs.readFileSync(path.join(OUT_PATH, 'temp/identifier.txt')).toString() === 'bouncytorch/deadlock_stats_editor'
+                    ) prevInstall = file;
+                    fs.rmSync(path.join(OUT_PATH, 'temp'), { recursive: true });
+                }
+
                 const numbers = files.map(v => {
                     const match = v.match(/^pak(\d+)_dir\.vpk$/);
-                    return match ? parseInt(match[1], 10) : null;
+                    return match ? parseInt(match[1]) : null;
                 })
                 .filter((n): n is number => n !== null)
                 .sort((a, b) => a - b);
-
                 
                 for (const num of numbers) {
                     if (num !== pakNum || pakNum == 100) break;
                     pakNum++;
+                }
+
+                if (prevInstall) {
+                    const response = dialog.showMessageBoxSync({
+                        type: 'warning',
+                        buttons: ['Replace', 'Create new'],
+                        message: `The program detected a previous installation. Do you want to replace that file? (${prevInstall})`
+                    });
+                    if (!response) {
+                        const num = prevInstall.match(/^pak(\d+)_dir\.vpk$/);
+                        if (num) pakNum = parseInt(num[1]);
+                    }
                 }
 
                 if (pakNum == 100) {
