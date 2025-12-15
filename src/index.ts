@@ -9,16 +9,16 @@ import { spawnSync } from 'child_process';
 import { app, dialog, shell } from 'electron';
 
 process.on('unhandledRejection', (err) => {
-    console.error('Unhandled Rejection', err)
+    console.error('Unhandled Rejection', err);
     dialog.showErrorBox('Unhandled Rejection', String(err));
     app.exit(1);
-})
+});
 
 process.on('uncaughtException', (err) => {
-    console.error('Uncaught Exception', err)
+    console.error('Uncaught Exception', err);
     dialog.showErrorBox('Uncaught Exception', String(err?.stack || err.message || err));
     app.exit(1);
-})
+});
 
 const CSDK_PATH = process.env.CSDK_PATH || path.join(app.isPackaged ? process.resourcesPath : process.cwd(), 'Reduced_CSDK_12');
 const ADDON_NAME = process.env.ADDON_NAME || 'randomizer_mod';
@@ -51,152 +51,152 @@ const JSON_HEROES_PATH = path.join(RES_PATH, 'json/heroes');
     .forEach((path) => fs.mkdirSync(path, { recursive: true }));
 
 const JSON_BLACKLIST_DEFAULTS = [
-    "hero_astro|ability_drifter_hunger",
-    "hero_astro|ability_magician_cloneturret",
-    "hero_astro|abilityw_power_jump",
-    "hero_atlas|ability_crackshot",
-    "hero_atlas|ability_magician_cloneturret",
-    "hero_atlas|ability_vampirebat_lovebites",
-    "hero_bebop|ability_afterburn",
-    "hero_bebop|ability_crackshot",
-    "hero_bebop|ability_drifter_hunger",
-    "hero_bebop|ability_magician_cloneturret",
-    "hero_bebop|ability_mirage_djinn_mark",
-    "hero_bebop|ability_power_jump",
-    "hero_bebop|ability_power_surge",
-    "hero_bebop|ability_vampirebat_lovebites",
-    "hero_bebop|citadel_ability_hornet_leap",
-    "hero_bookworm|ability_power_jump",
-    "hero_chrono|ability_bullet_flurry",
-    "hero_chrono|ability_crackshot",
-    "hero_chrono|ability_drifter_hunger",
-    "hero_chrono|ability_magician_cloneturret",
-    "hero_chrono|ability_mirage_djinn_mark",
-    "hero_chrono|ability_power_jump",
-    "hero_chrono|ability_vampirebat_lovebites",
-    "hero_doorman|ability_drifter_hunger",
-    "hero_doorman|ability_magician_cloneturret",
-    "hero_doorman|ability_power_jump",
-    "hero_drifter|ability_crackshot",
-    "hero_drifter|ability_magician_cloneturret",
-    "hero_drifter|ability_vampirebat_lovebites",
-    "hero_dynamo|ability_magician_cloneturret",
-    "hero_dynamo|ability_power_jump",
-    "hero_forge|ability_bullet_flurry",
-    "hero_forge|ability_crackshot",
-    "hero_forge|ability_drifter_hunger",
-    "hero_forge|ability_magician_cloneturret",
-    "hero_forge|ability_mirage_djinn_mark",
-    "hero_forge|ability_power_jump",
-    "hero_forge|ability_power_surge",
-    "hero_forge|ability_vampirebat_lovebites",
-    "hero_forge|citadel_ability_hornet_leap",
-    "hero_frank|ability_crackshot",
-    "hero_frank|ability_magician_cloneturret",
-    "hero_frank|ability_mirage_djinn_mark",
-    "hero_frank|ability_power_jump",
-    "hero_frank|ability_vampirebat_lovebites",
-    "hero_ghost|ability_magician_cloneturret",
-    "hero_ghost|ability_power_jump",
-    "hero_gigawatt|ability_bullet_flurry",
-    "hero_gigawatt|ability_crackshot",
-    "hero_gigawatt|ability_magician_cloneturret",
-    "hero_gigawatt|ability_mirage_djinn_mark",
-    "hero_gigawatt|ability_power_jump",
-    "hero_gigawatt|ability_vampirebat_lovebites",
-    "hero_haze|ability_crackshot",
-    "hero_haze|ability_drifter_hunger",
-    "hero_haze|ability_magician_cloneturret",
-    "hero_haze|ability_mirage_djinn_mark",
-    "hero_haze|ability_power_jump",
-    "hero_haze|ability_power_surge",
-    "hero_haze|ability_vampirebat_lovebites",
-    "hero_haze|citadel_ability_hornet_leap",
-    "hero_hornet|ability_crackshot",
-    "hero_hornet|ability_magician_cloneturret",
-    "hero_hornet|ability_mirage_djinn_mark",
-    "hero_hornet|ability_power_jump",
-    "hero_hornet|ability_vampirebat_lovebites",
-    "hero_inferno|ability_crackshot",
-    "hero_inferno|ability_drifter_hunger",
-    "hero_inferno|ability_magician_cloneturret",
-    "hero_inferno|ability_mirage_djinn_mark",
-    "hero_inferno|ability_power_jump",
-    "hero_inferno|ability_power_surge",
-    "hero_inferno|ability_vampirebat_lovebites",
-    "hero_inferno|citadel_ability_hornet_leap",
-    "hero_kelvin|ability_magician_cloneturret",
-    "hero_kelvin|ability_power_jump",
-    "hero_krill|ability_bullet_flurry",
-    "hero_krill|ability_crackshot",
-    "hero_krill|ability_magician_cloneturret",
-    "hero_krill|ability_mirage_djinn_mark",
-    "hero_krill|ability_power_jump",
-    "hero_krill|ability_vampirebat_lovebites",
-    "hero_lash|ability_bullet_flurry",
-    "hero_lash|ability_crackshot",
-    "hero_lash|ability_magician_cloneturret",
-    "hero_lash|ability_power_jump",
-    "hero_lash|ability_vampirebat_lovebites",
-    "hero_magician|ability_power_jump",
-    "hero_mirage|ability_crackshot",
-    "hero_mirage|ability_drifter_hunger",
-    "hero_mirage|ability_magician_cloneturret",
-    "hero_mirage|ability_power_jump",
-    "hero_nano|ability_bullet_flurry",
-    "hero_nano|ability_crackshot",
-    "hero_nano|ability_magician_cloneturret",
-    "hero_nano|ability_power_jump",
-    "hero_nano|ability_vampirebat_lovebites",
-    "hero_nano|citadel_ability_hornet_leap",
-    "hero_orion|ability_magician_cloneturret",
-    "hero_punkgoat|ability_crackshot",
-    "hero_punkgoat|ability_drifter_hunger",
-    "hero_punkgoat|ability_magician_cloneturret",
-    "hero_punkgoat|ability_mirage_djinn_mark",
-    "hero_punkgoat|ability_power_jump",
-    "hero_punkgoat|ability_power_surge",
-    "hero_punkgoat|ability_vampirebat_lovebites",
-    "hero_punkgoat|citadel_ability_hornet_leap",
-    "hero_shiv|ability_crackshot",
-    "hero_shiv|ability_power_jump",
-    "hero_shiv|ability_vampirebat_lovebites",
-    "hero_synth|ability_crackshot",
-    "hero_synth|ability_magician_cloneturret",
-    "hero_synth|ability_power_jump",
-    "hero_synth|ability_vampirebat_lovebites",
-    "hero_tengu|ability_crackshot",
-    "hero_tengu|ability_drifter_hunger",
-    "hero_tengu|ability_magician_cloneturret",
-    "hero_tengu|ability_mirage_djinn_mark",
-    "hero_tengu|ability_power_jump",
-    "hero_tengu|ability_power_surge",
-    "hero_tengu|ability_vampirebat_lovebites",
-    "hero_tengu|citadel_ability_hornet_leap",
-    "hero_vampirebat|ability_crackshot",
-    "hero_vampirebat|ability_magician_cloneturret",
-    "hero_vampirebat|ability_power_jump",
-    "hero_viper|ability_bullet_flurry",
-    "hero_viper|ability_crackshot",
-    "hero_viper|ability_drifter_hunger",
-    "hero_viper|ability_magician_cloneturret",
-    "hero_viper|ability_mirage_djinn_mark",
-    "hero_viper|ability_power_surge",
-    "hero_viper|ability_vampirebat_lovebites",
-    "hero_viper|citadel_ability_hornet_leap",
-    "hero_viscous|ability_magician_cloneturret",
-    "hero_warden|ability_crackshot",
-    "hero_warden|ability_stacking_damage",
-    "hero_warden|ability_magician_cloneturret",
-    "hero_warden|ability_power_jump",
-    "hero_wraith|ability_crackshot",
-    "hero_wraith|ability_drifter_hunger",
-    "hero_wraith|ability_magician_cloneturret",
-    "hero_wraith|ability_mirage_djinn_mark",
-    "hero_wraith|ability_power_jump",
-    "hero_wraith|ability_power_surge",
-    "hero_wraith|ability_vampirebat_lovebites",
-    "hero_wraith|citadel_ability_hornet_leap"
+    'hero_astro|ability_drifter_hunger',
+    'hero_astro|ability_magician_cloneturret',
+    'hero_astro|abilityw_power_jump',
+    'hero_atlas|ability_crackshot',
+    'hero_atlas|ability_magician_cloneturret',
+    'hero_atlas|ability_vampirebat_lovebites',
+    'hero_bebop|ability_afterburn',
+    'hero_bebop|ability_crackshot',
+    'hero_bebop|ability_drifter_hunger',
+    'hero_bebop|ability_magician_cloneturret',
+    'hero_bebop|ability_mirage_djinn_mark',
+    'hero_bebop|ability_power_jump',
+    'hero_bebop|ability_power_surge',
+    'hero_bebop|ability_vampirebat_lovebites',
+    'hero_bebop|citadel_ability_hornet_leap',
+    'hero_bookworm|ability_power_jump',
+    'hero_chrono|ability_bullet_flurry',
+    'hero_chrono|ability_crackshot',
+    'hero_chrono|ability_drifter_hunger',
+    'hero_chrono|ability_magician_cloneturret',
+    'hero_chrono|ability_mirage_djinn_mark',
+    'hero_chrono|ability_power_jump',
+    'hero_chrono|ability_vampirebat_lovebites',
+    'hero_doorman|ability_drifter_hunger',
+    'hero_doorman|ability_magician_cloneturret',
+    'hero_doorman|ability_power_jump',
+    'hero_drifter|ability_crackshot',
+    'hero_drifter|ability_magician_cloneturret',
+    'hero_drifter|ability_vampirebat_lovebites',
+    'hero_dynamo|ability_magician_cloneturret',
+    'hero_dynamo|ability_power_jump',
+    'hero_forge|ability_bullet_flurry',
+    'hero_forge|ability_crackshot',
+    'hero_forge|ability_drifter_hunger',
+    'hero_forge|ability_magician_cloneturret',
+    'hero_forge|ability_mirage_djinn_mark',
+    'hero_forge|ability_power_jump',
+    'hero_forge|ability_power_surge',
+    'hero_forge|ability_vampirebat_lovebites',
+    'hero_forge|citadel_ability_hornet_leap',
+    'hero_frank|ability_crackshot',
+    'hero_frank|ability_magician_cloneturret',
+    'hero_frank|ability_mirage_djinn_mark',
+    'hero_frank|ability_power_jump',
+    'hero_frank|ability_vampirebat_lovebites',
+    'hero_ghost|ability_magician_cloneturret',
+    'hero_ghost|ability_power_jump',
+    'hero_gigawatt|ability_bullet_flurry',
+    'hero_gigawatt|ability_crackshot',
+    'hero_gigawatt|ability_magician_cloneturret',
+    'hero_gigawatt|ability_mirage_djinn_mark',
+    'hero_gigawatt|ability_power_jump',
+    'hero_gigawatt|ability_vampirebat_lovebites',
+    'hero_haze|ability_crackshot',
+    'hero_haze|ability_drifter_hunger',
+    'hero_haze|ability_magician_cloneturret',
+    'hero_haze|ability_mirage_djinn_mark',
+    'hero_haze|ability_power_jump',
+    'hero_haze|ability_power_surge',
+    'hero_haze|ability_vampirebat_lovebites',
+    'hero_haze|citadel_ability_hornet_leap',
+    'hero_hornet|ability_crackshot',
+    'hero_hornet|ability_magician_cloneturret',
+    'hero_hornet|ability_mirage_djinn_mark',
+    'hero_hornet|ability_power_jump',
+    'hero_hornet|ability_vampirebat_lovebites',
+    'hero_inferno|ability_crackshot',
+    'hero_inferno|ability_drifter_hunger',
+    'hero_inferno|ability_magician_cloneturret',
+    'hero_inferno|ability_mirage_djinn_mark',
+    'hero_inferno|ability_power_jump',
+    'hero_inferno|ability_power_surge',
+    'hero_inferno|ability_vampirebat_lovebites',
+    'hero_inferno|citadel_ability_hornet_leap',
+    'hero_kelvin|ability_magician_cloneturret',
+    'hero_kelvin|ability_power_jump',
+    'hero_krill|ability_bullet_flurry',
+    'hero_krill|ability_crackshot',
+    'hero_krill|ability_magician_cloneturret',
+    'hero_krill|ability_mirage_djinn_mark',
+    'hero_krill|ability_power_jump',
+    'hero_krill|ability_vampirebat_lovebites',
+    'hero_lash|ability_bullet_flurry',
+    'hero_lash|ability_crackshot',
+    'hero_lash|ability_magician_cloneturret',
+    'hero_lash|ability_power_jump',
+    'hero_lash|ability_vampirebat_lovebites',
+    'hero_magician|ability_power_jump',
+    'hero_mirage|ability_crackshot',
+    'hero_mirage|ability_drifter_hunger',
+    'hero_mirage|ability_magician_cloneturret',
+    'hero_mirage|ability_power_jump',
+    'hero_nano|ability_bullet_flurry',
+    'hero_nano|ability_crackshot',
+    'hero_nano|ability_magician_cloneturret',
+    'hero_nano|ability_power_jump',
+    'hero_nano|ability_vampirebat_lovebites',
+    'hero_nano|citadel_ability_hornet_leap',
+    'hero_orion|ability_magician_cloneturret',
+    'hero_punkgoat|ability_crackshot',
+    'hero_punkgoat|ability_drifter_hunger',
+    'hero_punkgoat|ability_magician_cloneturret',
+    'hero_punkgoat|ability_mirage_djinn_mark',
+    'hero_punkgoat|ability_power_jump',
+    'hero_punkgoat|ability_power_surge',
+    'hero_punkgoat|ability_vampirebat_lovebites',
+    'hero_punkgoat|citadel_ability_hornet_leap',
+    'hero_shiv|ability_crackshot',
+    'hero_shiv|ability_power_jump',
+    'hero_shiv|ability_vampirebat_lovebites',
+    'hero_synth|ability_crackshot',
+    'hero_synth|ability_magician_cloneturret',
+    'hero_synth|ability_power_jump',
+    'hero_synth|ability_vampirebat_lovebites',
+    'hero_tengu|ability_crackshot',
+    'hero_tengu|ability_drifter_hunger',
+    'hero_tengu|ability_magician_cloneturret',
+    'hero_tengu|ability_mirage_djinn_mark',
+    'hero_tengu|ability_power_jump',
+    'hero_tengu|ability_power_surge',
+    'hero_tengu|ability_vampirebat_lovebites',
+    'hero_tengu|citadel_ability_hornet_leap',
+    'hero_vampirebat|ability_crackshot',
+    'hero_vampirebat|ability_magician_cloneturret',
+    'hero_vampirebat|ability_power_jump',
+    'hero_viper|ability_bullet_flurry',
+    'hero_viper|ability_crackshot',
+    'hero_viper|ability_drifter_hunger',
+    'hero_viper|ability_magician_cloneturret',
+    'hero_viper|ability_mirage_djinn_mark',
+    'hero_viper|ability_power_surge',
+    'hero_viper|ability_vampirebat_lovebites',
+    'hero_viper|citadel_ability_hornet_leap',
+    'hero_viscous|ability_magician_cloneturret',
+    'hero_warden|ability_crackshot',
+    'hero_warden|ability_stacking_damage',
+    'hero_warden|ability_magician_cloneturret',
+    'hero_warden|ability_power_jump',
+    'hero_wraith|ability_crackshot',
+    'hero_wraith|ability_drifter_hunger',
+    'hero_wraith|ability_magician_cloneturret',
+    'hero_wraith|ability_mirage_djinn_mark',
+    'hero_wraith|ability_power_jump',
+    'hero_wraith|ability_power_surge',
+    'hero_wraith|ability_vampirebat_lovebites',
+    'hero_wraith|citadel_ability_hornet_leap'
 ];
 
 let BLACKLIST: string[];
@@ -204,7 +204,7 @@ if (!fs.existsSync(path.join(OUT_PATH, 'blacklist.json'))) {
     fs.writeFileSync(path.join(OUT_PATH, 'blacklist.json'), JSON.stringify(JSON_BLACKLIST_DEFAULTS, null, 2));
     BLACKLIST = JSON_BLACKLIST_DEFAULTS;
 }
-else BLACKLIST = JSON.parse(fs.readFileSync(path.join(OUT_PATH, 'blacklist.json')).toString())
+else BLACKLIST = JSON.parse(fs.readFileSync(path.join(OUT_PATH, 'blacklist.json')).toString());
 
 async function getVdata(url: string, path: string): Promise<Buffer> {
     let vdataBuffer: Buffer;
@@ -231,7 +231,7 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
     catch (err) {
         console.error(err);
         if (!fs.existsSync(path))
-            throw new Error("Vdata could not be downloaded and no local copy exists. Check your internet connection or change the URL to abilities.vdata.")
+            throw new Error('Vdata could not be downloaded and no local copy exists. Check your internet connection or change the URL to abilities.vdata.');
         vdataBuffer = fs.readFileSync(path);
     }
 
@@ -244,21 +244,21 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
     const vdataAbilitiesBuffer = await getVdata(VDATA_ABILITIES_URL, VDATA_ABILITIES_CACHE_PATH);
     const vdataAbilities = KeyValues3.Parse(vdataAbilitiesBuffer.toString());
     vdataAbilities.FindKey('_include')?.SetValue(KeyValues3.Array([])); // the includes in `abilities.vdata` break down compilation because the included files are not in the pak
-    const vdataAbilitiesObject: { [key: string]: any } = vdataAbilities.toObject()
-    const vdataAbilitiesEntries = Object.entries(vdataAbilitiesObject).sort()
+    const vdataAbilitiesObject: { [key: string]: any } = vdataAbilities.toObject();
+    const vdataAbilitiesEntries = Object.entries(vdataAbilitiesObject).sort();
 
     // the blocks below split the file into multiple categories
     const abilitiesWeapons = vdataAbilitiesEntries
-        .filter(([_, value]) => value.m_eAbilityType == 'EAbilityType_Weapon')
+        .filter(([_, value]) => value.m_eAbilityType == 'EAbilityType_Weapon');
     const abilitiesSignature = vdataAbilitiesEntries
-        .filter(([_, value]) => value.m_eAbilityType == 'EAbilityType_Signature')
+        .filter(([_, value]) => value.m_eAbilityType == 'EAbilityType_Signature');
     const abilitiesItems = vdataAbilitiesEntries
-        .filter(([_, value]) => value.m_eAbilityType == 'EAbilityType_Item')
+        .filter(([_, value]) => value.m_eAbilityType == 'EAbilityType_Item');
 
     const vdataHeroesBuffer = await getVdata(VDATA_HEROES_URL, VDATA_HEROES_CACHE_PATH);
     const vdataHeroes = KeyValues3.Parse(vdataHeroesBuffer.toString());
-    const vdataHeroesObject: { [key: string]: any } = vdataHeroes.toObject()
-    const vdataHeroesEntries = Object.entries(vdataHeroesObject).sort()
+    const vdataHeroesObject: { [key: string]: any } = vdataHeroes.toObject();
+    const vdataHeroesEntries = Object.entries(vdataHeroesObject).sort();
 
     const heroesReleased = vdataHeroesEntries
         .filter(([_, value]) =>
@@ -266,9 +266,9 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
             && !value.m_bDisabled
             && !value.m_bNeedsTesting
             && value._base == 'hero_base'
-        ).sort()
+        ).sort();
 
-    fs.writeFileSync(path.join(JSON_ABILITIES_PATH, 'all.json'), JSON.stringify(vdataAbilitiesObject, null, 2))
+    fs.writeFileSync(path.join(JSON_ABILITIES_PATH, 'all.json'), JSON.stringify(vdataAbilitiesObject, null, 2));
     fs.writeFileSync(path.join(JSON_ABILITIES_PATH, 'weapons.json'), JSON.stringify(Object.fromEntries(abilitiesWeapons), null, 2));
     fs.writeFileSync(path.join(JSON_ABILITIES_PATH, 'abilities.json'), JSON.stringify(Object.fromEntries(abilitiesSignature), null, 2));
     fs.writeFileSync(path.join(JSON_ABILITIES_PATH, 'items.json'), JSON.stringify(Object.fromEntries(abilitiesItems), null, 2));
@@ -288,11 +288,11 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
 
     // Here we shuffle abilities of released heroes.
     const abilitySlots = 4;
-    let abilityOrder: string[][] = Array.from({ length: abilitySlots }, () => []);
+    const abilityOrder: string[][] = Array.from({ length: abilitySlots }, () => []);
     const heroesNames = heroesReleased.map(([key]) => key);
     heroesReleased.forEach(([_, value]) =>
         abilityOrder.forEach((array, index) =>
-            array.push(value.m_mapBoundAbilities[`ESlot_Signature_${index + 1}`])))
+            array.push(value.m_mapBoundAbilities[`ESlot_Signature_${index + 1}`])));
 
     const shuffleArray = (array: string[]) => {
         const n = array.length;
@@ -300,22 +300,22 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
         const indices = [...Array(n).keys()];
 
         for (let i = 0; i < n; i++) {
-            let choices = indices.filter(j => j !== i);
-            let j = choices[Math.floor(Math.random() * choices.length)];
+            const choices = indices.filter(j => j !== i);
+            const j = choices[Math.floor(Math.random() * choices.length)];
             result[i] = array[j];
             indices.splice(indices.indexOf(j), 1);
         }
 
         return result;
-    }
+    };
 
     const blacklistedCombos = new Set<string>(BLACKLIST);
 
-    const isBlacklistedCombo = (heroName: string, ability: string): boolean => 
+    const isBlacklistedCombo = (heroName: string, ability: string): boolean =>
         blacklistedCombos.has(`${heroName}|${ability}`);
 
     // Shuffle with blacklist validation
-    let abilityOrderShuffled: string[][] = abilityOrder.map((array, slotIndex) => {
+    const abilityOrderShuffled: string[][] = abilityOrder.map((array, slotIndex) => {
         let shuffled = shuffleArray(array);
         let attempts = 0;
         const maxAttempts = 5000;
@@ -335,12 +335,12 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
 
         if (attempts >= maxAttempts)
             console.warn(`⚠️  Slot ${slotIndex + 1}: Could not avoid all blacklisted combos after ${maxAttempts} attempts`);
-        console.log('wow')
+        console.log('wow');
         return shuffled;
     });
 
     // Existing power_jump override
-    abilityOrderShuffled[1] = abilityOrderShuffled[1].map((v) => v == 'ability_power_jump' ? 'citadel_ability_lash' : v)
+    abilityOrderShuffled[1] = abilityOrderShuffled[1].map((v) => v == 'ability_power_jump' ? 'citadel_ability_lash' : v);
 
     // Validation: Ensure no blacklisted combos slipped through
     heroesNames.forEach((heroName, heroIdx) => {
@@ -351,7 +351,7 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
         });
     });
 
-    abilityOrderShuffled[1] = abilityOrderShuffled[1].map((v) => v == 'ability_power_jump' ? 'citadel_ability_lash' : v)
+    abilityOrderShuffled[1] = abilityOrderShuffled[1].map((v) => v == 'ability_power_jump' ? 'citadel_ability_lash' : v);
 
     // This changes the vdata
     heroesNames.forEach((key, index) =>
@@ -362,8 +362,8 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
                 ?.FindKey(`ESlot_Signature_${i + 1}`)
                 ?.SetValue(KeyValues3.String(array[index]))));
 
-    if (fs.existsSync(CONTENT_PATH)) fs.rmSync(CONTENT_PATH, { recursive: true })
-    if (fs.existsSync(GAME_PATH)) fs.rmSync(GAME_PATH, { recursive: true })
+    if (fs.existsSync(CONTENT_PATH)) fs.rmSync(CONTENT_PATH, { recursive: true });
+    if (fs.existsSync(GAME_PATH)) fs.rmSync(GAME_PATH, { recursive: true });
     fs.mkdirSync(path.join(CONTENT_PATH, 'scripts'), { recursive: true });
     fs.writeFileSync(path.join(CONTENT_PATH, 'scripts/abilities.vdata'), vdataAbilities.toString());
     fs.writeFileSync(path.join(CONTENT_PATH, 'scripts/heroes.vdata'), vdataHeroes.toString());
@@ -374,7 +374,7 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
             path.join(CONTENT_PATH, 'scripts/abilities.vdata'),
             path.join(CONTENT_PATH, 'scripts/heroes.vdata')
         ]
-    )
+    );
 
     process.stdout.write(resourceCompiler.stdout);
 
@@ -412,15 +412,15 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
         dialog.showMessageBoxSync({
             type: 'info',
             message: 'To install manually, move the file into the game/citadel/addons folder of your game and rename to pak##_dir.vpk to enable (## is a number from 01 to 99)'
-        })
+        });
 
         return app.exit();
-    }
+    };
 
     if (!steamPath || !fs.existsSync(path.join(steamPath, 'config/libraryfolders.vdf')))
         return gameDetectionFail();
 
-    const libraryFolders = await KeyValues.Load(path.join(steamPath, 'config/libraryfolders.vdf'))
+    const libraryFolders = await KeyValues.Load(path.join(steamPath, 'config/libraryfolders.vdf'));
     const libraryLocation = libraryFolders
         .FindKey('libraryfolders')
         ?.Find((kv) =>
@@ -428,77 +428,77 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
                 ?.FindKey('1422450'))
         )
         ?.FindKey('path')
-        ?.GetValue()
+        ?.GetValue();
 
     if (!libraryLocation || !fs.existsSync(path.join(libraryLocation, 'steamapps/common/Deadlock')))
         return gameDetectionFail();
 
-    const gameinfoPath = path.join(libraryLocation, 'steamapps/common/Deadlock/game/citadel/gameinfo.gi')
+    const gameinfoPath = path.join(libraryLocation, 'steamapps/common/Deadlock/game/citadel/gameinfo.gi');
     const addonsPath = path.join(libraryLocation, 'steamapps/common/Deadlock/game/citadel/addons');
     switch (
-    dialog.showMessageBoxSync({
-        type: 'question',
-        buttons: ['Install and enable', 'Install', 'Open output folder', 'Exit'],
-        message: 'A .vpk archive has been generated for the randomizer mod. The generator has detected a Deadlock installation. Do you want to install it or open the folder with the generated .vpk?'
-    })
+        dialog.showMessageBoxSync({
+            type: 'question',
+            buttons: ['Install and enable', 'Install', 'Open output folder', 'Exit'],
+            message: 'A .vpk archive has been generated for the randomizer mod. The generator has detected a Deadlock installation. Do you want to install it or open the folder with the generated .vpk?'
+        })
     ) {
-        case 0: {
-            if (!fs.existsSync(gameinfoPath)) return gameDetectionFail();
-            
-            let pakNum = 1;
-            if (!fs.existsSync(addonsPath)) fs.mkdirSync(addonsPath, { recursive: true });
-            else {
-                const files = fs.readdirSync(addonsPath).filter(v => v.startsWith('pak') && v.endsWith('_dir.vpk'));
+    case 0: {
+        if (!fs.existsSync(gameinfoPath)) return gameDetectionFail();
 
-                let prevInstall = null;
-                for (const file of files) {
-                    const vpk = Vpk.fromFile(path.join(addonsPath, file));
-                    if (vpk.getFiles().find((v) => v.extension == 'dl_stats_editor' 
+        let pakNum = 1;
+        if (!fs.existsSync(addonsPath)) fs.mkdirSync(addonsPath, { recursive: true });
+        else {
+            const files = fs.readdirSync(addonsPath).filter(v => v.startsWith('pak') && v.endsWith('_dir.vpk'));
+
+            let prevInstall = null;
+            for (const file of files) {
+                const vpk = Vpk.fromFile(path.join(addonsPath, file));
+                if (vpk.getFiles().find((v) => v.extension == 'dl_stats_editor'
                         && v.extlessFileName == 'org.aurigrave'))
-                        prevInstall = file;
-                }
+                    prevInstall = file;
+            }
 
-                const numbers = files.map(v => {
-                    const match = v.match(/^pak(\d+)_dir\.vpk$/);
-                    return match ? parseInt(match[1]) : null;
-                })
+            const numbers = files.map(v => {
+                const match = v.match(/^pak(\d+)_dir\.vpk$/);
+                return match ? parseInt(match[1]) : null;
+            })
                 .filter((n): n is number => n !== null)
                 .sort((a, b) => a - b);
-                
-                for (const num of numbers) {
-                    if (num !== pakNum || pakNum == 100) break;
-                    pakNum++;
-                }
 
-                if (prevInstall) {
-                    const response = dialog.showMessageBoxSync({
-                        type: 'warning',
-                        buttons: ['Replace', 'Create new'],
-                        message: `The program detected a previous installation. Do you want to replace that file? (${prevInstall})`
-                    });
-                    if (!response) {
-                        const num = prevInstall.match(/^pak(\d+)_dir\.vpk$/);
-                        if (num) pakNum = parseInt(num[1]);
-                    }
-                }
+            for (const num of numbers) {
+                if (num !== pakNum || pakNum == 100) break;
+                pakNum++;
+            }
 
-                if (pakNum == 100) {
-                    dialog.showMessageBoxSync({
-                        type: 'error',
-                        message: 'You don\'t have space for any additional mods. Remove some mod to enable the randomizer.'
-                    });
-                    break;
+            if (prevInstall) {
+                const response = dialog.showMessageBoxSync({
+                    type: 'warning',
+                    buttons: ['Replace', 'Create new'],
+                    message: `The program detected a previous installation. Do you want to replace that file? (${prevInstall})`
+                });
+                if (!response) {
+                    const num = prevInstall.match(/^pak(\d+)_dir\.vpk$/);
+                    if (num) pakNum = parseInt(num[1]);
                 }
             }
-            fs.copyFileSync(path.join(OUT_PATH, `${ADDON_NAME}.vpk`), path.join(addonsPath, `pak${pakNum.toString().padStart(2, "0")}_dir.vpk`));
 
-            const gameinfo = await KeyValues.Load(gameinfoPath);
-            const searchPaths = gameinfo
-                .FindKey('GameInfo')
-                ?.FindKey('FileSystem')
-                ?.FindKey('SearchPaths');
-            if (
-                (!searchPaths?.FindAllKeys('Game')?.map(v => v.GetValue()).includes('citadel/addons')
+            if (pakNum == 100) {
+                dialog.showMessageBoxSync({
+                    type: 'error',
+                    message: 'You don\'t have space for any additional mods. Remove some mod to enable the randomizer.'
+                });
+                break;
+            }
+        }
+        fs.copyFileSync(path.join(OUT_PATH, `${ADDON_NAME}.vpk`), path.join(addonsPath, `pak${pakNum.toString().padStart(2, '0')}_dir.vpk`));
+
+        const gameinfo = await KeyValues.Load(gameinfoPath);
+        const searchPaths = gameinfo
+            .FindKey('GameInfo')
+            ?.FindKey('FileSystem')
+            ?.FindKey('SearchPaths');
+        if (
+            (!searchPaths?.FindAllKeys('Game')?.map(v => v.GetValue()).includes('citadel/addons')
                     || !searchPaths?.FindAllKeys('Mod')?.map(v => v.GetValue()).find(v => v == 'core' || v == 'citadel')
                     || !searchPaths?.FindAllKeys('Write')?.map(v => v.GetValue()).find(v => v == 'core' || v == 'citadel'))
                 && !dialog.showMessageBoxSync({
@@ -506,51 +506,51 @@ async function getVdata(url: string, path: string): Promise<Buffer> {
                     message: 'You don\'t appear to have mods enabled. Would you like to enable them?',
                     buttons: ['Enable mods', 'No thanks'],
                 })
-            ) {
-                searchPaths?.Free();
-                gameinfo
-                    .FindKey('GameInfo')
-                    ?.FindKey('FileSystem')
-                    ?.Append(new KeyValues('SearchPaths', [
-                        new KeyValues('Game', 'citadel/addons'),
-                        new KeyValues('Mod', 'citadel'),
-                        new KeyValues('Write', 'citadel'),
-                        new KeyValues('Game', 'citadel'),
-                        new KeyValues('Mod', 'core'),
-                        new KeyValues('Write', 'core'),
-                        new KeyValues('Game', 'core'),
-                    ]))
+        ) {
+            searchPaths?.Free();
+            gameinfo
+                .FindKey('GameInfo')
+                ?.FindKey('FileSystem')
+                ?.Append(new KeyValues('SearchPaths', [
+                    new KeyValues('Game', 'citadel/addons'),
+                    new KeyValues('Mod', 'citadel'),
+                    new KeyValues('Write', 'citadel'),
+                    new KeyValues('Game', 'citadel'),
+                    new KeyValues('Mod', 'core'),
+                    new KeyValues('Write', 'core'),
+                    new KeyValues('Game', 'core'),
+                ]));
 
-                await gameinfo.Save(gameinfoPath);
-            }
-
-            shell.showItemInFolder(path.join(addonsPath, `pak${pakNum.toString().padStart(2, "0")}_dir.vpk`));
-            dialog.showMessageBoxSync({
-                type: 'info',
-                message: 'After exploitation, you can rename the file to anything you want to disable it'
-            })
-
-            break;
+            await gameinfo.Save(gameinfoPath);
         }
-            
-        case 1: {
-            if (!fs.existsSync(addonsPath)) fs.mkdirSync(addonsPath, { recursive: true });
-            fs.copyFileSync(path.join(OUT_PATH, `${ADDON_NAME}.vpk`), path.join(addonsPath, `${ADDON_NAME}.vpk`));
-            shell.showItemInFolder(path.join(addonsPath, `${ADDON_NAME}.vpk`));
-            dialog.showMessageBoxSync({
-                type: 'info',
-                message: 'To enable, rename the file to pak##_dir.vpk to enable (## is a number from 01 to 99)'
-            })
-            break;
-        }
-        case 2: 
-            shell.showItemInFolder(path.join(OUT_PATH, `${ADDON_NAME}.vpk`));
-            dialog.showMessageBoxSync({
-                type: 'info',
-                message: 'To install manually, move the file into the game/citadel/addons folder of your game and rename to pak##_dir.vpk to enable (## is a number from 01 to 99)'
-            });
-            break;
+
+        shell.showItemInFolder(path.join(addonsPath, `pak${pakNum.toString().padStart(2, '0')}_dir.vpk`));
+        dialog.showMessageBoxSync({
+            type: 'info',
+            message: 'After exploitation, you can rename the file to anything you want to disable it'
+        });
+
+        break;
+    }
+
+    case 1: {
+        if (!fs.existsSync(addonsPath)) fs.mkdirSync(addonsPath, { recursive: true });
+        fs.copyFileSync(path.join(OUT_PATH, `${ADDON_NAME}.vpk`), path.join(addonsPath, `${ADDON_NAME}.vpk`));
+        shell.showItemInFolder(path.join(addonsPath, `${ADDON_NAME}.vpk`));
+        dialog.showMessageBoxSync({
+            type: 'info',
+            message: 'To enable, rename the file to pak##_dir.vpk to enable (## is a number from 01 to 99)'
+        });
+        break;
+    }
+    case 2:
+        shell.showItemInFolder(path.join(OUT_PATH, `${ADDON_NAME}.vpk`));
+        dialog.showMessageBoxSync({
+            type: 'info',
+            message: 'To install manually, move the file into the game/citadel/addons folder of your game and rename to pak##_dir.vpk to enable (## is a number from 01 to 99)'
+        });
+        break;
     }
 
     return app.exit();
-})()
+})();
