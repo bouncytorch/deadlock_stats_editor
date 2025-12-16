@@ -20,7 +20,7 @@ process.on('uncaughtException', (err) => {
     app.exit(1);
 });
 
-const CSDK_PATH = process.env.CSDK_PATH || path.join(app.isPackaged ? process.resourcesPath : process.cwd(), 'Reduced_CSDK_12');
+const CSDK_PATH = process.env.CSDK_PATH || path.join(app.isPackaged ? process.resourcesPath : process.cwd(), 'assets/csdk');
 const ADDON_NAME = process.env.ADDON_NAME || 'randomizer_mod';
 
 const OUT_PATH = process.env.OUT_PATH || path.join(process.cwd(), 'output');
