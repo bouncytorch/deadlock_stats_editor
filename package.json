@@ -1,19 +1,20 @@
 {
-  "name": "randomizer_mod_generator",
-  "version": "1.0.0",
+  "name": "deadlock_stats_editor",
   "description": "A generator script for a Deadlock ability/weapon randomizer mod.",
+  "version": "1.0.0",
   "license": "ISC",
   "author": "bouncytorch",
   "type": "commonjs",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
+    "test": "jest",
+    "start": "tsc && electron-forge start",
+    "package": "tsc && electron-forge package",
+    "make": "tsc && electron-forge make",
     "publish": "tsc && electron-forge publish"
   },
   "dependencies": {
+    "dotenv": "^17.2.3",
     "easy-keyvalues": "^1.2.7",
     "node-vvpk": "^1.0.0",
     "winreg": "^1.2.5"
@@ -25,9 +26,19 @@
     "@electron-forge/plugin-fuses": "^7.10.2",
     "@electron-forge/publisher-github": "^7.10.2",
     "@electron/fuses": "^1.8.0",
+    "@eslint/js": "^9.39.2",
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.9.1",
     "@types/winreg": "^1.2.36",
     "electron": "^39.1.0",
-    "typescript": "^5.9.3"
+    "eslint": "^9.39.2",
+    "globals": "^16.5.0",
+    "jest": "^29.7.0",
+    "jiti": "^2.6.1",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.49.0"
   }
 }

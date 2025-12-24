@@ -16,10 +16,10 @@ The goal is to build an accessible editor, for people to be able to create their
 > With how close both versions were Build citadel 10524 and CS2 10521 (Shader VCS 70)
 > It's was mostly a drag and drop from citadel to CS2 (excluding few dll's like resourcerecomplier to allow file saving / cherry picking trial and error)
 > This allowed server mode with limited tools (hammer/material editor)
-> 
+>
 > But to get into all tools ( Lose server mode with mismatch errors)
 > Cs2 Dlls:
-> 
+>
 > ```
 > AnimationSystem
 > AssetPreview
@@ -27,13 +27,13 @@ The goal is to build an accessible editor, for people to be able to create their
 > Particles
 > Vphysics2
 > ```
-> 
+>
 > Believe it's down to Tier0 and Vphysics2 that could hold the key to full access with server mode
 > Checking the call functions only a few match up while others are offset by a small margin
 > Other is replacing strings that have "_Legacy" to remove any remaining error mismatches between client/server.dll.
-> 
+>
 > ----------
-> 
+>
 > The other method is using as little as possible from Citadel (No errors + Tools but no server , SFM would need Citadel "Particles" to work properly)
 > ```
 > Deadlock.exe
@@ -50,10 +50,10 @@ The goal is to build an accessible editor, for people to be able to create their
 > Amd_fidelityfx_vk
 > nvngx_dlss
 > ```
-> 
+>
 > ---------
 > These two are responsible for allowing us to view Proj_projectile particles that citadel uses but doesn't like playing nice with CS2 Vphysics2 for some reason.
-> 
+>
 > ```
 > AssetPreview
 > MeshSystem
@@ -62,7 +62,7 @@ The goal is to build an accessible editor, for people to be able to create their
 </details>
 
 ## Why not cross-platform?
-As far as I can tell, workshop tools for Linux do not exist for any Valve title made with Source 2, at least not Counter-Strike 2, which these tools are derived from. Besides, currently Deadlock doesn't even have a native Linux build. 
+As far as I can tell, workshop tools for Linux do not exist for any Valve title made with Source 2, at least not Counter-Strike 2, which these tools are derived from. Besides, currently Deadlock doesn't even have a native Linux build.
 
 
 It is possible, however to successfully run this tool under Wine. Versions I've tested were: wine-staging 9.21 & 9.22, valve-wine 10.19 - resourcecompiler seemed to have no issues. Unfortunately the automatic installation is not possible unless the program is ran in the exact prefix Deadlock's bound to, so you'll have to install and enable the mod manually. Refer to this guide for more info on how to install Deadlock mods manually: [https://deadlockmodding.pages.dev/installing-mods](https://deadlockmodding.pages.dev/installing-mods)
